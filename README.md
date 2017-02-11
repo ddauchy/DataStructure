@@ -1,3 +1,3 @@
 # Data Structures
 
-Practicing datastructures in a few different languages
+Practicing data structures in a few different languages
