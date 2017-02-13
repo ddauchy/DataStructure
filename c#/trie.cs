@@ -14,6 +14,14 @@ public class Trie {
     public void printAllData() {
         this.root.printAllData(0);
     }
+
+    public bool findWord (string word, bool completeOnly) {
+        return this.root.findWord (word, completeOnly);
+    }
+
+    public void printAllWords() {
+        this.root.printAllCompleteWords ("");
+    }
     
 }
 
@@ -27,6 +35,29 @@ public class TrieNode {
         this.character = character;
         this.isCompleteWord = false;
         this.children = new List<TrieNode>();
+    }
+
+    public bool findWord(string word, bool completeOnly) {
+
+        if (string.IsNullOrEmpty (word)) {
+            if(completeOnly) {
+                return this.isCompleteWord;
+            }
+            else {
+                return true;
+            }
+        }
+
+        char firstChar = word [0];
+        string remnant = word.Remove (0, 1);
+
+        foreach (TrieNode child in this.children) {
+            if (child.character == firstChar) {
+                return child.findWord (remnant, completeOnly);
+            }
+        }
+
+        return false;
     }
 
     public void addLetters(string word) {
@@ -45,6 +76,17 @@ public class TrieNode {
         child.addLetters(remnant);
     }
     
+    public void printAllCompleteWords(string prefix) {
+        if (this.isCompleteWord) {
+            Console.WriteLine (prefix + this.character);
+        }
+
+        foreach (TrieNode child in this.children) {
+            child.printAllCompleteWords (prefix + this.character);
+        }
+
+    }
+
     public void printAllData(int level) {
         string output ="";
         
@@ -93,15 +135,15 @@ public class TrieNode {
 }
 
 class Start {  
-  static void Main() {
-     Trie myTrie = new Trie();
-     myTrie.addWord("heytheredan");
-     myTrie.addWord("hello");
-     myTrie.addWord("hay");
-     myTrie.addWord("tree");
-     myTrie.addWord("try");
-     myTrie.addWord("trymyluck");
-     myTrie.addWord("trymy");
-     myTrie.printAllData();
+    static void Main() {
+    Trie myTrie = new Trie();
+    myTrie.addWord("heytheredan");
+    myTrie.addWord("hello");
+    myTrie.addWord("hay");
+    myTrie.addWord("tree");
+    myTrie.addWord("try");
+    myTrie.addWord("trymyluck");
+    myTrie.addWord("trymy");
+    Console.WriteLine(myTrie.findWord("try", true));
   }
 }
